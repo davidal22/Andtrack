@@ -33,9 +33,9 @@
 
   <!-- Desplegable per seleccionar tracks -->
   <div id="trackSelector">
-    <label for="tracks">Selecciona la Ruta:</label>
+    <label for="tracks">Selecciona els tracks a mostrar:</label>
     <select id="tracks" multiple>
-      <option value="ruta1">Madriu</option>
+      <option value="ruta1">Ruta 1</option>
       <option value="ruta2">Ruta 2</option>
       <option value="ruta3">Ruta 3</option>
     </select>
@@ -54,17 +54,17 @@
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    // Variables per als tracks
+    // Variables per als tracks GPX
     const tracks = {
       ruta1: new L.GPX("ruta1.gpx", { 
         async: true,
         polyline_options: { color: "blue", weight: 4 }
       }),
-      ruta2: new L.GPX("tracks/ruta2.gpx", { 
+      ruta2: new L.GPX("ruta2.gpx", { 
         async: true,
         polyline_options: { color: "blue", weight: 4 }
       }),
-      ruta3: new L.GPX("tracks/ruta3.gpx", { 
+      ruta3: new L.GPX("ruta3.gpx", { 
         async: true,
         polyline_options: { color: "blue", weight: 4 }
       })
