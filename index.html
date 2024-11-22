@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
     #map {
-      height: 100vh;
+      height: 80vh;
       width: 100%;
     }
     body {
@@ -22,11 +22,27 @@
       color: white;
       margin: 0;
     }
+    #trackSelector {
+      margin: 20px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
   <h1>AndTrack: la brúixola d'Andorra</h1>
+
+  <!-- Desplegable per seleccionar tracks -->
+  <div id="trackSelector">
+    <label for="tracks">Selecciona els tracks a mostrar:</label>
+    <select id="tracks" multiple>
+      <option value="ruta1">Ruta 1</option>
+      <option value="ruta2">Ruta 2</option>
+      <option value="ruta3">Ruta 3</option>
+    </select>
+  </div>
+
   <div id="map"></div>
+
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-gpx@1.7.0/leaflet-gpx.min.js"></script>
   <script>
@@ -38,21 +54,40 @@
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    // Carregar i mostrar els tracks GPX
-    const track1 = new L.GPX("tracks/ruta1.gpx", { async: true }).addTo(map);
-    const track2 = new L.GPX("tracks/ruta2.gpx", { async: true }).addTo(map);
-    const track3 = new L.GPX("tracks/ruta3.gpx", { async: true }).addTo(map);
+    // Variables per als tracks
+    const tracks = {
+      ruta1: new L.GPX("tracks/ruta1.gpx", { 
+        async: true,
+        polyline_options: { color: "blue", weight: 4 }
+      }),
+      ruta2: new L.GPX("tracks/ruta2.gpx", { 
+        async: true,
+        polyline_options: { color: "blue", weight: 4 }
+      }),
+      ruta3: new L.GPX("tracks/ruta3.gpx", { 
+        async: true,
+        polyline_options: { color: "blue", weight: 4 }
+      })
+    };
 
-    // Ajusta el mapa per mostrar tots els tracks carregats
-    track1.on('loaded', function(e) {
-      map.fitBounds(e.target.getBounds());
-    });
-    track2.on('loaded', function(e) {
-      map.fitBounds(e.target.getBounds());
-    });
-    track3.on('loaded', function(e) {
-      map.fitBounds(e.target.getBounds());
-    });
+    // Funció per mostrar o amagar tracks segons la selecció
+    function updateTracks() {
+      const selectedTracks = Array.from(document.getElementById("tracks").selectedOptions).map(option => option.value);
+
+      // Amaga tots els tracks
+      Object.keys(tracks).forEach(track => tracks[track].remove());
+
+      // Mostra els tracks seleccionats
+      selectedTracks.forEach(track => {
+        tracks[track].addTo(map);
+      });
+    }
+
+    // Afegir esdeveniment de canvi al desplegable
+    document.getElementById("tracks").addEventListener("change", updateTracks);
+
+    // Inicialitza amb els tracks seleccionats per defecte
+    updateTracks();
   </script>
 </body>
 </html>
